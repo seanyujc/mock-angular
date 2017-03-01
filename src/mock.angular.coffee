@@ -1,7 +1,7 @@
 do ->
   Mock.mockjax = (module) ->
     class Item
-      add: (url) ->
+      add: (options) ->
         for k, v of Mock._mocked
           reg = null
           if /^\/.*\/$/.test k
@@ -9,8 +9,8 @@ do ->
           else
             reg = new RegExp k
 
-          if reg.test url
-            return Mock.mock v.template
+          if reg.test options.url
+            return v.template?(options) ? Mock.mock v.template
 
     try
       module.config ($httpProvider) ->
